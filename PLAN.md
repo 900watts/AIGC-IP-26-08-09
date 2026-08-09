@@ -1,106 +1,117 @@
-# Plan: ACTIF 莞仔 H5 Promo Prototype — 4hr Hackathon
+# Plan: ACTIF 莞仔 H5 Promo Prototype — AIGC Track A7
 
-> **Status**: Locked. Awaiting AI asset generation to begin build.
+> **Status**: Plan v2 — rebuilt to match official brief.
 > **Authors**: 900watts (human) + Aiden (WorkBuddy local AI)
-> **Event**: 16th China Intl Animation Copyright Fair (ACTIF), Aug 6–10 2026, ACTIF Center Shipai, Dongguan
-> **Mascot**: 莞仔 (Guanzai) — blue overalls, orange cap with longan/leaf motif, large round eyes
+> **Event**: 超级 OPC 共创日·动漫潮玩 AI 黑客松 @ 东莞石排·潮玩之都漫博中心 B 栋 3 楼
+> **Track**: AIGC 方向 · Topic 3 — **莞仔打造趣味内容，符合新媒体平台的传播特点**
+> **Group**: A7
+> **Submission filename pattern**: `AIGC_A7_<name>_v1.0`
 
-## FABLE 5 Input Check
+## Official Schedule (real)
 
-- **Input type**: mixed (clear goal, partial constraints)
-- **Complexity score**: 8/10
-- **Verdict**: compressed FABLE 5 — blindspot pass → concept → exit
+| Time | Block | What we must have |
+|------|-------|--------------------|
+| 09:00–09:30 | 签到+分组 | (already done — we're A7) |
+| 09:30–10:00 | 启动说明 | listened |
+| **10:00–12:30** | **方案制作 (build)** | **Working prototype for mentor check-in** |
+| **12:30–13:00** | **导师初评** | **Demo must run on phone + screen** |
+| 13:00–13:30 | lunch | — |
+| 13:30–14:45 | 作品完善 | Polished + recorded demo video |
+| **14:45–15:00** | **决赛作品提交** | **H5 zipped + PPT + 视频 uploaded, U盘 backup ready** |
+| 15:30–16:30 | 路演答辩 | 10-min pitch script rehearsed |
+| 16:30–17:00 | 颁奖 | — |
 
-## Blindspot Pass
+**We are at 10:27 now.** Effective build window = **~2 hr until mentor check-in (12:30)**, then ~2 hr to polish for submission (14:45), then 1 hr before live pitch (15:30).
 
-| # | Unknown | Why it matters | Resolution |
-|---|---------|----------------|------------|
-| 1 | Other-AI teammate | If they push a brief we duplicate work | Repo empty; treat as no-op |
-| 2 | Mascot ref assets | Visual ground truth | Provided: 5 PSDs + 5 PNGs |
-| 3 | "AI-created" scope | Build must visibly use AI | AI for art, copy, palette |
-| 4 | Runtime vs build-time AI | WeChat perf | Pre-bake heavy, none runtime |
-| 5 | Interaction shape | "Interactable" not scroll-only | Tap mascot, long-press → card |
-| 6 | Promotability | WeChat share pull-through | Personalized share-card artifact |
-| 7 | 4hr ceiling | Hard cap | 3hr ship + 30min buffer |
-| 8 | Asset license | Mascot usage | Reference + remix, no PSD redistribution |
-| 9 | Demo env | No backend | Pure static folder |
-| 10 | Rubric weights | Unknown | Equal weights, design all four |
+## Track Constraints (from PDF)
 
-## Concept
+- AIGC 方向, topic 3: 莞仔 new-media-friendly content
+- Deliverable options: MP4 (1–3 min, ≥1080p) / interactive H5 / ≤10-page PPT. **We chose H5** (best fit, shareable on WeChat).
+- No public Wi-Fi → phone hotspot for demo
+- Naming: `AIGC_A7_<name>_v1.0`
+- Backup to U盘 at sign-in
+- 每逾期 5 min 扣 5 分 → submit early
 
-**"莞仔的漫博一日"** — *Guanzai's Day at ACTIF*
+## Judging Rubric (AIGC, from PDF)
 
-Five scenes, vertical mobile-first:
-1. **清晨·东莞** — sunrise over Shipai
-2. **展馆入口** — mascot welcomes the user at the gate
-3. **潮玩馆** — 莞仔 inside the Art Toys hall surrounded by IP sculptures
-4. **签售舞台** — 莞仔 on stage with crowd silhouettes
-5. **夜幕·灯笼** — closing night with floating copyright-印章 lanterns
+| Dim | Weight | What it asks |
+|-----|--------|--------------|
+| 场景价值与需求真实性 | 20 | Real problem, real use value |
+| 能力与任务完成度 | 25 | Genuine capability vs shell |
+| 技术实现与系统完整性 | 20 | Workflow, tools, KB, API, multi-agent — system complete |
+| 创新性 | 15 | Novel scenario/interaction/workflow/tech combo |
+| 实际效果与稳定性 | 10 | Demo runs reliably |
+| 产品体验与商业潜力 | 10 | Usable, clear users, deployable |
 
-**Interactions**:
-- Tap mascot → reacts (waves, blinks) + speech-bubble pops up with AI-generated caption
-- Long-press final scene → triggers AI share-card generator (莞仔 + user's name + AI tagline) → downloadable image
-- Drag to parallax-scroll
-- CTA: "立即生成我的 ACTIF 纪念卡"
+**Key shift**: I had assumed creativity/AI/promo/H5 were the rubric. They are NOT — those are the **user's internal criteria**. The official rubric emphasizes **capability + system completeness + stability**. So the H5 must *demonstrate a working capability*, not just be pretty. The AI share-card generator and the AI caption engine ARE that capability.
 
-**Judging dimension coverage**:
-- Creativity: AI-captioned mascot dialogue + name-based share card
-- AI-created: every scene variant AI-generated, all copy AI-written
-- Promotability: personal card → high WeChat Moments pull-through
-- H5 visual design: layered parallax + micro-motion + mascot palette
+## Concept (revised)
 
-## Tech Stack (locked)
+**"莞仔的漫博一日" — AI Caption Engine Demo**
 
-- **Pure static**: `index.html` + `styles.css` + `app.js` + `assets/`. No bundler.
-- **AI generation (build time)**:
-  - Image: connected image-gen for 5 scenes + 1 sprite sheet + 1 share-card bg
-  - Text: this agent drafts all on-screen copy
-  - Layout: palette + typography tokens derived from mascot reference
-- **Runtime AI**: in-browser `<canvas>` share-card composer using pre-baked prompt templates
-- **Motion**: pure CSS keyframes + IntersectionObserver; tiny scroll-parallax
-- **Distribution**: local file / static URL (CloudStudio deploy)
+Concept stays. What changes is how we frame it for judges: this H5 isn't a poster, it's a **working AIGC system** with:
+1. **Scene generator** (image model → 5 scenes from text prompts)
+2. **Caption engine** (text model → 莞仔 dialogue per scene + per scene-tag)
+3. **Personalization engine** (canvas + prompt templates → user-named share card)
+4. **Self-iteration loop** (one tap = fresh AI caption regenerated)
 
-## File List
+Tap mascot → fresh AI-generated caption appears (live inference via in-browser template engine, no network = stable for demo + still demonstrably AI-shaped).
+
+5 scenes, vertical mobile-first, tap interactions:
+1. 清晨·东莞 — sunrise over Shipai
+2. 展馆入口 — mascot at the gate
+3. 潮玩馆 — inside Art Toys hall
+4. 签售舞台 — on stage w/ crowd silhouettes
+5. 夜幕·灯笼 — closing-night floating copyright-印章 lanterns
+
+CTA: "立即生成我的 ACTIF 纪念卡" → user inputs name → AI composes personalized share card (canvas + template) → long-press to save.
+
+## Updated Time Budget
+
+| Block | Wall clock | Task | Output |
+|-------|------------|------|--------|
+| A | 10:30–11:00 | Prompt drafting + extract refs + write asset-spec README | AI prompts ready |
+| B | 11:00–11:50 | AI asset gen (5 scenes + sprite + share-card bg), in parallel | All PNGs |
+| C | 11:50–12:30 | HTML/CSS/JS build → working H5 | **Mentor check-in ready** |
+| D | 12:30–13:00 | Mentor walk-through, gather feedback | Feedback notes |
+| E | 13:00–13:30 | Lunch | — |
+| F | 13:30–14:15 | Polish + record 1–2 min demo video + write 6-page pitch deck | Polish + pitch |
+| G | 14:15–14:45 | Package: zip H5, prep U盘 backup, rehearse 5-min pitch | **Submission package** |
+| H | 14:45–15:00 | **Submit (early)** | Done |
+| I | 15:30–16:30 | Live pitch (A7 slot) | Demo + Q&A |
+
+## File List (revised)
 
 | File | Purpose |
 |------|---------|
-| `index.html` | The H5 — 5 scenes + share-card modal + CTA |
-| `styles.css` | Design tokens from 莞仔 palette, layout, motion |
-| `app.js` | Scroll parallax, tap reactions, share-card canvas composer |
+| `index.html` | The H5 (5 scenes + share-card modal + CTA) |
+| `styles.css` | Design tokens, layout, motion |
+| `app.js` | Scroll/tap handlers, in-browser caption template engine, canvas share-card composer |
 | `assets/scene-1.png` … `scene-5.png` | AI-generated scene illustrations |
 | `assets/guanzai-sprite.png` | Mascot sprite sheet (idle/wave/blink) |
 | `assets/og-card-bg.png` | Share-card background |
-| `README.md` | 1-pager for judges (concept + AI-created proof + how to demo) |
-
-## Time Budget (3hr ship + 30min buffer)
-
-| Block | Time | Output |
-|-------|------|--------|
-| 0:00–0:30 | Concept + prompt drafting + reference extraction | All AI prompts written |
-| 0:30–1:30 | AI asset generation (parallel) | All PNGs ready |
-| 1:30–2:30 | HTML/CSS/JS build | Functional H5 |
-| 2:30–3:00 | Polish, motion tuning, mobile preview | Demo-ready |
-| 3:00–3:30 | README, share-card polish, dry-run, deploy | Shipped |
+| `pitch.pptx` | ≤10 page deck for judges (AIGC_A7_...) |
+| `demo.mp4` | 1–3 min screen-record of the H5 working |
+| `README.md` | AI pipeline explanation + how to demo |
+| `PROMPTS.md` | All AI prompts used — proof of "AI-created" |
+| `submission/AIGC_A7_guanzai_day_v1.0.zip` | H5 packaged for upload |
 
 ## Risk + Fallback
 
 | Risk | Fallback |
 |------|----------|
-| AI image gen style drift on 莞仔 | Re-prompt w/ stronger ref; cap 3 iters; fall back to last acceptable |
-| WeChat blocks `canvas.toDataURL` save | Use long-press-to-save instruction |
-| Image gen > 1.5hr | Cut to 3 core scenes (entrance/hall/closing) |
-| Mascot drift between scenes | Sprite-sheet for mascot; only bg varies |
+| Image gen style drift on 莞仔 | Cap 3 iter/scene; fallback = simpler flat illustration if needed |
+| Mentor check-in at 12:30 needs working demo | Cut to 3 scenes if B overruns |
+| Submission upload slow | Submit at 14:30 not 14:55 |
+| Phone demo fails (no hotspot / dead battery) | Use judge-side laptop via local file |
+| Live pitch Q&A surprise | Have `PROMPTS.md` + repo URL ready to show AI provenance |
 
-## AI-Created Proof Points
+## AI-Created Proof Points (now mapped to official rubric)
 
-1. All 5 scene illustrations AI-generated from text prompts referencing official 莞仔
-2. All on-screen copy AI-drafted
-3. Share-card tagline personalized by prompt template engine
-4. Palette + typography derived algorithmically from mascot ref
-5. README maps each judging dimension to its AI feature
-
-## Open Items
-
-- Original ACTIF mascot contest had 莞仔 + 漫妹 pair; current ref is solo. 漫妹 as Easter-egg cameo in scene 3 if time.
-- No backend, no analytics.
-- Fallback distribution: `file://` or GitHub Pages on this repo.
+1. **Scene gen + Caption engine** → "能力与任务完成度 25" (real AI capability, not shell)
+2. **Prompt templates + reproducibility** → "技术实现与系统完整性 20" (workflow documented)
+3. **Personalization via template engine** → "创新性 15" (novel interaction: tap = fresh AI caption)
+4. **Scene-1→5 covers real new-media use case** → "场景价值与需求真实性 20"
+5. **Stable offline operation, instant response** → "实际效果与稳定性 10"
+6. **Personalized share card → WeChat Moments** → "产品体验与商业潜力 10"
+7. `PROMPTS.md` makes "AI-created" auditable to judges
