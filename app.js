@@ -1,9 +1,33 @@
 /* =========================================================
-   莞仔的漫博一日 · app.js (v3 — chat-first)
+   莞仔的漫博一日 · app.js (v6 — chat-first, hardened)
    ========================================================= */
 
 (() => {
   'use strict';
+
+  // Surface uncaught errors visibly inside the chat so a bad run is obvious
+  window.addEventListener('error', (ev) => {
+    try {
+      const log = document.getElementById('chatLog');
+      if (!log) return;
+      const b = document.createElement('div');
+      b.className = 'chat-msg chat-msg--bot';
+      b.innerHTML = `<div class="chat-bubble chat-bubble--bot" style="background:#FFE2D6;border-color:#FF8A4C">⚠️ JS 错误: ${(ev.message || ev.error || 'unknown').toString().slice(0, 200)}</div>`;
+      log.appendChild(b);
+      log.scrollTop = log.scrollHeight;
+    } catch (_) {}
+  });
+  window.addEventListener('unhandledrejection', (ev) => {
+    try {
+      const log = document.getElementById('chatLog');
+      if (!log) return;
+      const b = document.createElement('div');
+      b.className = 'chat-msg chat-msg--bot';
+      b.innerHTML = `<div class="chat-bubble chat-bubble--bot" style="background:#FFE2D6;border-color:#FF8A4C">⚠️ Promise 错误: ${(ev.reason?.message || ev.reason || 'unknown').toString().slice(0, 200)}</div>`;
+      log.appendChild(b);
+      log.scrollTop = log.scrollHeight;
+    } catch (_) {}
+  });
 
   /* ---------- 1. Caption engine (existing — kept for scene bubbles) ---------- */
   const CaptionEngine = (() => {
@@ -101,6 +125,12 @@
   const chatAvatar = document.getElementById('chatAvatar');
   const chatChips = document.getElementById('chatChips');
   const chatSend = chatForm?.querySelector('.chat-send');
+
+  const POSE = {
+    IDLE: 'assets/mascot-idle-circle.png',
+    WAVE: 'assets/mascot-wave-circle.png',
+    BLINK: 'assets/mascot-blink-circle.png'
+  };
 
   const history = [];
   let isStreaming = false;
