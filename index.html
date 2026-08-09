@@ -22,26 +22,28 @@
     </div>
   </header>
 
-  <main id="scroller" class="scroller">
+  <main class="scroller">
 
-    <section class="hero scene" data-scene="0">
-      <div class="hero-frame">
-        <p class="hero-eyebrow">第十六届中国国际动漫博览会</p>
-        <h1 class="hero-title">
-          <span class="hero-title-line">莞仔的</span>
-          <span class="hero-title-line hero-title-line--accent">漫博一日</span>
-        </h1>
-        <p class="hero-sub">点击 莞仔 听他说话 · 或点右下角跟他聊天</p>
+    <section class="hero">
+      <p class="hero-eyebrow">第十六届中国国际动漫博览会</p>
+      <h1 class="hero-title">
+        <span class="hero-title-line">莞仔的</span>
+        <span class="hero-title-line hero-title-line--accent">漫博一日</span>
+      </h1>
+      <p class="hero-sub">向下滚动 · 一起走完 莞仔 的五站</p>
+      <div class="hero-hint">
+        <span class="hero-chip">点击 莞仔</span>
+        <span class="hero-chip hero-chip--alt">右下角 · 跟他聊</span>
       </div>
       <div class="scroll-hint"><span class="scroll-hint-text">scroll</span><span class="scroll-hint-arrow"></span></div>
     </section>
 
-    <!-- 5 scenes, each shows scene-N.png + mascot button -->
-    <section class="scene scene--right" data-scene="1">
+    <!-- 5 scenes, single column, all sizes -->
+    <section class="scene" data-scene="1">
       <div class="scene-art">
         <img class="scene-img" src="assets/scene-1.png" alt="莞仔在东莞清晨" loading="lazy" />
-        <button class="mascot" data-mascot aria-label="点击 莞仔 听 TA 说话">
-          <img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img />
+        <button class="mascot" data-mascot aria-label="点 莞仔 听 TA 说话">
+          <img class="mascot-img" src="assets/mascot-wave-circle.png" alt="" data-mascot-img />
         </button>
         <div class="bubble" data-bubble><span class="bubble-text">清晨好, 东莞今天也发光</span></div>
       </div>
@@ -53,24 +55,24 @@
       </div>
     </section>
 
-    <section class="scene scene--left" data-scene="2">
+    <section class="scene" data-scene="2">
+      <div class="scene-art">
+        <img class="scene-img" src="assets/scene-2.png" alt="莞仔 在展馆入口" loading="lazy" />
+        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave-circle.png" alt="" data-mascot-img /></button>
+        <div class="bubble" data-bubble><span class="bubble-text">欢迎来到 ACTIF 的门口</span></div>
+      </div>
       <div class="scene-text">
         <p class="scene-eyebrow">第二站</p>
         <h2 class="scene-title">展馆入口</h2>
         <p class="scene-body">拱门挂满了彩旗, 莞仔 在灯光下向你招手。</p>
         <ul class="scene-tags"><li>#入场</li><li>#欢迎</li><li>#拱门</li></ul>
       </div>
-      <div class="scene-art">
-        <img class="scene-img" src="assets/scene-2.png" alt="莞仔 在展馆入口" loading="lazy" />
-        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img /></button>
-        <div class="bubble" data-bubble><span class="bubble-text">欢迎来到 ACTIF 的门口</span></div>
-      </div>
     </section>
 
-    <section class="scene scene--right" data-scene="3">
+    <section class="scene" data-scene="3">
       <div class="scene-art">
         <img class="scene-img" src="assets/scene-3.png" alt="莞仔 在潮玩馆" loading="lazy" />
-        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img /></button>
+        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave-circle.png" alt="" data-mascot-img /></button>
         <div class="bubble" data-bubble><span class="bubble-text">潮玩馆里, 每一格都是惊喜</span></div>
       </div>
       <div class="scene-text">
@@ -81,24 +83,24 @@
       </div>
     </section>
 
-    <section class="scene scene--left" data-scene="4">
+    <section class="scene" data-scene="4">
+      <div class="scene-art">
+        <img class="scene-img" src="assets/scene-4.png" alt="莞仔 在签售舞台" loading="lazy" />
+        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave-circle.png" alt="" data-mascot-img /></button>
+        <div class="bubble" data-bubble><span class="bubble-text">签售这一刻, 想签给所有人</span></div>
+      </div>
       <div class="scene-text">
         <p class="scene-eyebrow">第四站</p>
         <h2 class="scene-title">签售舞台</h2>
         <p class="scene-body">台上十分钟, 台下一整天。莞仔 握紧了那支橙色马克笔。</p>
         <ul class="scene-tags"><li>#签售</li><li>#舞台</li><li>#见面</li></ul>
       </div>
-      <div class="scene-art">
-        <img class="scene-img" src="assets/scene-4.png" alt="莞仔 在签售舞台" loading="lazy" />
-        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img /></button>
-        <div class="bubble" data-bubble><span class="bubble-text">签售这一刻, 想签给所有人</span></div>
-      </div>
     </section>
 
-    <section class="scene scene--right" data-scene="5">
+    <section class="scene" data-scene="5">
       <div class="scene-art">
         <img class="scene-img" src="assets/scene-5.png" alt="莞仔 在夜幕放飞灯笼" loading="lazy" />
-        <button class="mascot mascot--hero" data-mascot><img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img /></button>
+        <button class="mascot mascot--hero" data-mascot><img class="mascot-img" src="assets/mascot-wave-circle.png" alt="" data-mascot-img /></button>
         <div class="bubble" data-bubble><span class="bubble-text">闭幕后, 让一盏灯替你记住今天</span></div>
       </div>
       <div class="scene-text">
@@ -116,27 +118,22 @@
     </footer>
   </main>
 
-  <!-- ============================================
-       FLOATING CHAT BUTTON — opens the chat drawer
-       ============================================ -->
+  <!-- Chat FAB — now using clean circular avatar -->
   <button class="chat-fab" id="chatFab" type="button" aria-label="和 莞仔 聊天">
-    <img src="assets/mascot-wave.png" alt="" class="chat-fab-img" />
+    <img src="assets/mascot-wave-circle.png" alt="" class="chat-fab-img" id="chatFabImg" />
     <span class="chat-fab-dot" aria-hidden="true"></span>
   </button>
 
   <div class="cta">
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><path d="M8 15h3"/></svg>
-    <span>长按图片保存纪念卡</span>
+    <span>点右下角和 莞仔 聊天</span>
   </div>
 
-  <!-- ============================================
-       CHAT DRAWER
-       ============================================ -->
+  <!-- Chat drawer -->
   <div class="chat-drawer" id="chatDrawer" role="dialog" aria-modal="true" aria-labelledby="chatTitle" hidden>
     <header class="chat-head">
       <div class="chat-head-info">
         <div class="chat-head-avatar">
-          <img src="assets/mascot-wave.png" alt="" id="chatAvatar" />
+          <img src="assets/mascot-wave-circle.png" alt="" id="chatAvatar" />
         </div>
         <div class="chat-head-meta">
           <h3 class="chat-head-title" id="chatTitle">莞仔</h3>

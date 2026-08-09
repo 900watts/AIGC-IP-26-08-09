@@ -40,7 +40,11 @@
   }
 
   /* ---------- 3. Tap-to-react mascot (scene bubbles) ---------- */
-  const POSE = { IDLE: 'assets/mascot-idle.png', WAVE: 'assets/mascot-wave.png', BLINK: 'assets/mascot-blink.png' };
+  const POSE = {
+    IDLE: 'assets/mascot-idle-circle.png',
+    WAVE: 'assets/mascot-wave-circle.png',
+    BLINK: 'assets/mascot-blink-circle.png'
+  };
   document.querySelectorAll('[data-mascot]').forEach(btn => {
     const scene = btn.closest('.scene');
     const sceneIdx = Number(scene?.dataset.scene ?? 1);
