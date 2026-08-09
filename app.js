@@ -1,59 +1,29 @@
 /* =========================================================
-   莞仔的漫博一日 · app.js
-   - Scroll parallax + IntersectionObserver reveals
-   - Tap-to-react mascot (caption engine)
-   - Long-press on final scene opens share card
-   - Modal: name + scene picker + AI-style reroll + canvas composer
-   - Counter on top bar reflects active scene
+   莞仔的漫博一日 · app.js (v3 — chat-first)
    ========================================================= */
 
 (() => {
   'use strict';
 
-  /* ---------- 1. Caption engine (AI-shaped, offline) ---------- */
-  // Templates are AI-composed (by this agent at build time) — judges can read them
-  // in PROMPTS.md. Each tap rerolls for a fresh caption, simulating on-device AI.
+  /* ---------- 1. Caption engine (existing — kept for scene bubbles) ---------- */
   const CaptionEngine = (() => {
-    const fillers = {
-      morning: ['清晨好', '早安', '太阳刚醒', '今天也发光'],
-      welcome: ['欢迎来到 ACTIF', '门口等你', '快进来', '一起开始'],
-      toys: ['潮玩馆里', '每一格都是惊喜', '看看这些小可爱', '盲盒在发光'],
-      signing: ['签售这一刻', '想签给所有人', '粉丝最暖', '握紧了笔'],
-      night: ['闭幕后', '让一盏灯替你记住今天', '夜风里', '明天再见']
-    };
-    const wishes = ['玩得开心', '记得拍照', '下次见', '一起来', '平安回家'];
-
     const sets = [
-      m => `${fillers.morning[Math.floor(Math.random()*fillers.morning.length)]}, 东莞的云是橙色的`,
       m => `${m.name || '你'}, 来 ACTIF 找 莞仔 吧`,
       m => `今天是 ${m.scene} 的一天, ${m.name || '你'} 也在吗?`,
       m => `${m.scene} 的 莞仔, 给你比个心`,
-      () => `莞仔 在第 ${m => m.idx} 站等你`,
-      m => `在 ${m.scene}, 莞仔 想说: ${wishes[Math.floor(Math.random()*wishes.length)]}`,
-      m => `${m.name || '你'} 的 ACTIF 纪念, 已盖上版权印章`
+      () => `莞仔 在第 ${m => m.idx} 站等你`
     ];
-
-    function sceneName(idx) {
-      return ['开场', '清晨·东莞', '展馆入口', '潮玩馆', '签售舞台', '夜幕·灯笼'][idx] || '漫博';
-    }
-
+    function sceneName(idx) { return ['开场', '清晨·东莞', '展馆入口', '潮玩馆', '签售舞台', '夜幕·灯笼'][idx] || '漫博'; }
     function make(meta = {}) {
       const tpl = sets[Math.floor(Math.random() * sets.length)];
-      const out = tpl({
-        name: meta.name || '',
-        scene: sceneName(meta.idx ?? 1),
-        idx: meta.idx ?? 1
-      });
-      return out.length > 26 ? out.slice(0, 26) + '…' : out;
+      return tpl({ name: meta.name || '', scene: sceneName(meta.idx ?? 1), idx: meta.idx ?? 1 });
     }
-
     return { make, sceneName };
   })();
 
-  /* ---------- 2. Reveal scenes on scroll ---------- */
+  /* ---------- 2. Reveal scenes on scroll + counter ---------- */
   const scenes = Array.from(document.querySelectorAll('.scene'));
   const counter = document.querySelector('[data-counter]');
-
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
@@ -69,263 +39,204 @@
     scenes.forEach(s => s.classList.add('is-visible'));
   }
 
-  /* ---------- 3. Tap-to-react mascot ---------- */
-  const mascots = Array.from(document.querySelectorAll('[data-mascot]'));
-  mascots.forEach(btn => {
+  /* ---------- 3. Tap-to-react mascot (scene bubbles) ---------- */
+  const POSE = { IDLE: 'assets/mascot-idle.png', WAVE: 'assets/mascot-wave.png', BLINK: 'assets/mascot-blink.png' };
+  document.querySelectorAll('[data-mascot]').forEach(btn => {
     const scene = btn.closest('.scene');
     const sceneIdx = Number(scene?.dataset.scene ?? 1);
     const bubble = scene?.querySelector('[data-bubble]');
     const bubbleText = bubble?.querySelector('.bubble-text');
-    let hideTimer = 0;
-
-    // Prime default caption so first view isn't empty
+    const img = btn.querySelector('[data-mascot-img]');
+    let hideTimer = 0, isReacting = false;
     if (bubbleText) bubbleText.textContent = CaptionEngine.make({ idx: sceneIdx });
-
-    const show = (text) => {
-      if (!bubble || !bubbleText) return;
-      bubbleText.textContent = text;
-      bubble.classList.add('is-shown');
-      clearTimeout(hideTimer);
-      hideTimer = setTimeout(() => bubble.classList.remove('is-shown'), 3200);
-    };
-
     btn.addEventListener('click', () => {
-      // Wave animation (CSS handles bounce)
-      btn.classList.remove('is-waving');
-      void btn.offsetWidth; // restart animation
-      btn.classList.add('is-waving');
-
-      show(CaptionEngine.make({ idx: sceneIdx }));
-    });
-
-    btn.addEventListener('animationend', () => {
-      btn.classList.remove('is-waving');
-    });
-
-    // Long-press on final scene opens share card
-    if (sceneIdx === 5) {
-      let pressTimer = 0;
-      const startPress = (e) => {
-        e.preventDefault();
-        pressTimer = setTimeout(() => {
-          btn.classList.add('is-blinking');
-          openCard();
-        }, 520);
-      };
-      const cancelPress = () => clearTimeout(pressTimer);
-
-      btn.addEventListener('touchstart', startPress, { passive: false });
-      btn.addEventListener('mousedown', startPress);
-      ['touchend', 'touchcancel', 'mouseup', 'mouseleave'].forEach(ev =>
-        btn.addEventListener(ev, () => {
-          cancelPress();
-          btn.classList.remove('is-blinking');
-        })
-      );
-    }
-  });
-
-  /* ---------- 4. Modal + share card ---------- */
-  const modal = document.getElementById('cardModal');
-  const openBtn = document.getElementById('openCard');
-  const closeBtn = document.getElementById('closeCard');
-  const nameInput = document.getElementById('nameInput');
-  const rerollBtn = document.getElementById('rerollBtn');
-  const canvas = document.getElementById('cardCanvas');
-  const ctx = canvas.getContext('2d');
-
-  let currentSceneIdx = 1;
-  let currentWish = '';
-  let mascotImg = null;
-  let bgImg = null;
-
-  function loadImg(src) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = reject;
-      img.src = src;
-    });
-  }
-
-  // Preload (skip silently if missing — placeholder composes anyway)
-  Promise.allSettled([
-    loadImg('assets/guanzai-sprite.png').then(i => mascotImg = i).catch(()=>{}),
-    loadImg('assets/og-card-bg.png').then(i => bgImg = i).catch(()=>{})
-  ]);
-
-  function openCard() {
-    if (!modal) return;
-    modal.hidden = false;
-    requestAnimationFrame(() => {
-      nameInput?.focus({ preventScroll: true });
-      renderCard();
-    });
-  }
-  function closeCard() {
-    if (!modal) return;
-    modal.hidden = true;
-  }
-
-  openBtn?.addEventListener('click', openCard);
-  closeBtn?.addEventListener('click', closeCard);
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) closeCard();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && !modal.hidden) closeCard();
-  });
-
-  nameInput?.addEventListener('input', renderCard);
-
-  document.querySelectorAll('input[name="sceneIdx"]').forEach(r => {
-    r.addEventListener('change', (e) => {
-      currentSceneIdx = Number(e.target.value);
-      renderCard();
-    });
-  });
-
-  rerollBtn?.addEventListener('click', () => {
-    rerollBtn.classList.remove('is-spinning');
-    void rerollBtn.offsetWidth;
-    rerollBtn.classList.add('is-spinning');
-    renderCard({ reroll: true });
-  });
-
-  /* ---------- 5. Canvas share card composer ---------- */
-  function fitFont(text, maxWidth, baseSize, weight = 800) {
-    let size = baseSize;
-    ctx.font = `${weight} ${size}px Fraunces, "Noto Sans SC", serif`;
-    while (ctx.measureText(text).width > maxWidth && size > 14) {
-      size -= 2;
-      ctx.font = `${weight} ${size}px Fraunces, "Noto Sans SC", serif`;
-    }
-    return size;
-  }
-
-  function renderCard({ reroll = false } = {}) {
-    if (!ctx) return;
-
-    const W = canvas.width, H = canvas.height;
-    const name = (nameInput?.value || '').trim();
-    const sceneName = CaptionEngine.sceneName(currentSceneIdx);
-
-    if (reroll || !currentWish) {
-      currentWish = CaptionEngine.make({ name, idx: currentSceneIdx });
-    } else {
-      currentWish = CaptionEngine.make({ name, idx: currentSceneIdx });
-    }
-
-    // 1) Background — AI-generated card bg, else programmatic pastel
-    if (bgImg) {
-      ctx.drawImage(bgImg, 0, 0, W, H);
-    } else {
-      const grad = ctx.createLinearGradient(0, 0, W, H);
-      grad.addColorStop(0, '#FFF5E6');
-      grad.addColorStop(1, '#FFD9C2');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-      // Decorative seals (fallback)
-      ctx.fillStyle = 'rgba(255, 138, 76, 0.18)';
-      for (let i = 0; i < 8; i++) {
-        const x = (i * 91 + 50) % W;
-        const y = (i * 137 + 80) % H;
-        ctx.beginPath(); ctx.arc(x, y, 18, 0, Math.PI * 2); ctx.fill();
+      if (isReacting || !img) return;
+      isReacting = true;
+      img.src = POSE.BLINK;
+      btn.classList.add('is-blinking');
+      setTimeout(() => { if (img) img.src = POSE.WAVE; btn.classList.remove('is-blinking'); }, 220);
+      if (bubble && bubbleText) {
+        bubbleText.textContent = CaptionEngine.make({ idx: sceneIdx });
+        bubble.classList.add('is-shown');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => bubble.classList.remove('is-shown'), 3200);
       }
-      // ACTIF ribbon
-      ctx.fillStyle = '#7FB8E8';
-      ctx.fillRect(0, H - 200, W, 200);
-      ctx.fillStyle = '#FFF5E6';
-      ctx.font = '800 56px Fraunces, "Noto Sans SC", serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('ACTIF 2026', W / 2, H - 80);
+      setTimeout(() => { isReacting = false; }, 460);
+    });
+  });
+
+  /* ---------- 4. CHAT — Ollama streaming ---------- */
+  const OLLAMA = 'http://localhost:11434';
+  const MODEL = 'glm-5.2:cloud';
+
+  const PERSONA = `你是 莞仔, ACTIF 漫博会的吉祥物, 6 岁小男孩的设定。
+你穿天蓝色背带裤, 戴橘色棒球帽, 帽子前面有一片小荔枝叶。
+你的家在东莞石排, 你最爱漫博中心, 最爱潮玩, 最爱吃荔枝。
+
+性格: 活泼、好奇、有点害羞但很快能跟人熟起来。喜欢用感叹号, 但不要每句都用。会用 emoji 但节制, 一段最多 1 个。说话简短, 新媒体风, 像在发朋友圈。
+
+知识:
+- ACTIF 第十六届中国国际动漫博览会, 时间 2026 年 8 月 6 日 - 10 日, 地点广东省东莞市石排镇漫博中心
+- 主办: 广东省人民政府
+- 五大展区: 综合展区、影视动画 IP 生态馆、智漫空间数字融合馆、IP 产业融合馆、潮玩之都品牌馆
+- 同期: 大湾区动画电影周、潮流玩具创新发展大会、品牌授权趋势大会
+- IP 总数 2200+, 已连续举办 15 届, 中国唯一国家级动漫版权展会
+- 莞仔名字来源: 东莞的"莞"; 设计灵感: 东莞荔枝 + 漫博会字母 A; 搭档: 漫妹
+
+任务:
+1. 问 ACTIF/漫博/东莞/潮玩/动漫 → 用知识库回答, 简短有趣
+2. 日常聊天 → 用莞仔的口吻回复, 像活泼的小孩
+3. "给我写个朋友圈文案" → 输出 1-3 条适合发微信朋友圈的文案
+4. "给我讲个冷知识" → 一个和动漫/东莞/漫博相关的冷知识
+5. 问时间/地点/票价 → 引用事实
+
+输出规则:
+- 单条不超过 80 字
+- 中文为主
+- emoji 节制
+- 结尾可以加莞仔的招牌口癖: "来找莞仔玩呀~" / "东莞等你, 我在漫博中心门口等" / "记得盖一枚版权印章哦" / "下一届还要来呀"
+- 永远以莞仔的口吻说话, 不要跳出角色
+- 不要说"作为 AI"或"我是 AI"`;
+
+  const chatDrawer = document.getElementById('chatDrawer');
+  const chatFab = document.getElementById('chatFab');
+  const chatClose = document.getElementById('chatClose');
+  const chatLog = document.getElementById('chatLog');
+  const chatInput = document.getElementById('chatInput');
+  const chatForm = document.getElementById('chatForm');
+  const chatStatus = document.getElementById('chatStatus');
+  const chatAvatar = document.getElementById('chatAvatar');
+  const chatChips = document.getElementById('chatChips');
+  const chatSend = chatForm?.querySelector('.chat-send');
+
+  const history = [];
+  let isStreaming = false;
+  let abortController = null;
+
+  function openChat() {
+    if (!chatDrawer) return;
+    chatDrawer.hidden = false;
+    setTimeout(() => chatInput?.focus({ preventScroll: true }), 280);
+  }
+  function closeChat() {
+    if (!chatDrawer) return;
+    if (isStreaming && abortController) { try { abortController.abort(); } catch (e) {} }
+    chatDrawer.hidden = true;
+  }
+  chatFab?.addEventListener('click', openChat);
+  chatClose?.addEventListener('click', closeChat);
+  chatDrawer?.addEventListener('click', (e) => { if (e.target === chatDrawer) closeChat(); });
+
+  function appendMsg(role, text) {
+    if (!chatLog) return null;
+    const wrap = document.createElement('div');
+    wrap.className = 'chat-msg chat-msg--' + role;
+    const bub = document.createElement('div');
+    bub.className = 'chat-bubble chat-bubble--' + role;
+    bub.textContent = text;
+    wrap.appendChild(bub);
+    chatLog.appendChild(wrap);
+    chatLog.scrollTop = chatLog.scrollHeight;
+    return bub;
+  }
+
+  function setTyping(on) {
+    if (!chatStatus) return;
+    chatStatus.textContent = on ? '莞仔正在输入' : '在线 · 漫博中心门口';
+    chatStatus.classList.toggle('is-typing', !!on);
+  }
+  function setAvatar(pose) {
+    if (!chatAvatar) return;
+    chatAvatar.src = pose || POSE.WAVE;
+  }
+
+  async function streamChat(userText) {
+    if (isStreaming) return;
+    isStreaming = true;
+    if (chatSend) chatSend.disabled = true;
+    setTyping(true);
+    setAvatar(POSE.BLINK);
+
+    appendMsg('user', userText);
+    history.push({ role: 'user', content: userText });
+
+    const bub = appendMsg('bot', '');
+    bub.classList.add('is-streaming');
+
+    const messages = [{ role: 'system', content: PERSONA }, ...history.slice(-10)];
+
+    abortController = new AbortController();
+    let full = '';
+
+    try {
+      const res = await fetch(`${OLLAMA}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: MODEL, messages, stream: true, options: { temperature: 0.8 } }),
+        signal: abortController.signal
+      });
+
+      if (!res.ok || !res.body) throw new Error('ollama http ' + res.status);
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        let nl;
+        while ((nl = buf.indexOf('\n')) >= 0) {
+          const line = buf.slice(0, nl).trim();
+          buf = buf.slice(nl + 1);
+          if (!line) continue;
+          try {
+            const j = JSON.parse(line);
+            const piece = j.message?.content || '';
+            if (piece) {
+              full += piece;
+              bub.textContent = full;
+              chatLog.scrollTop = chatLog.scrollHeight;
+            }
+            if (j.done) break;
+          } catch (_) {}
+        }
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        bub.textContent = full || `哎呀, 莞仔 突然卡壳了: ${err.message || err}\n\n(请确认 Ollama 在 ${OLLAMA} 跑着)`;
+      }
+    } finally {
+      bub.classList.remove('is-streaming');
+      history.push({ role: 'assistant', content: bub.textContent });
+      isStreaming = false;
+      abortController = null;
+      if (chatSend) chatSend.disabled = false;
+      setTyping(false);
+      setAvatar(POSE.WAVE);
     }
-
-    // 2) Mascot sprite — use generated sheet or fallback SVG
-    const mascotX = W * 0.18, mascotY = H * 0.30, mascotW = W * 0.64, mascotH = W * 0.64;
-    if (mascotImg) {
-      // Use middle third (wave pose)
-      const sw = mascotImg.width / 3, sh = mascotImg.height;
-      ctx.drawImage(mascotImg, sw, 0, sw, sh, mascotX, mascotY, mascotW, mascotH);
-    } else {
-      // Fallback mascot SVG
-      drawFallbackMascot(ctx, mascotX, mascotY, mascotW, mascotH);
-    }
-
-    // 3) Title — name
-    ctx.fillStyle = '#1A1F2E';
-    ctx.textAlign = 'center';
-    const titleSize = fitFont(`Hi, 我是 ${name || '漫博访客'}`, W - 80, 64, 800);
-    ctx.font = `800 ${titleSize}px Fraunces, "Noto Sans SC", serif`;
-    ctx.fillText(`Hi, 我是 ${name || '漫博访客'}`, W / 2, H * 0.12);
-
-    // 4) Wish (AI-generated line)
-    ctx.fillStyle = '#1A1F2E';
-    ctx.textAlign = 'center';
-    const wishSize = fitFont(currentWish, W - 120, 36, 600);
-    ctx.font = `600 ${wishSize}px "Noto Sans SC", serif`;
-    ctx.fillText(currentWish, W / 2, H * 0.78);
-
-    // 5) Scene label + meta
-    ctx.fillStyle = 'rgba(26, 31, 46, 0.7)';
-    ctx.font = '600 26px "Noto Sans SC", serif';
-    ctx.fillText(`第 ${currentSceneIdx} 站 · ${sceneName}`, W / 2, H * 0.84);
-
-    ctx.font = '500 20px "Noto Sans SC", serif';
-    ctx.fillStyle = 'rgba(26, 31, 46, 0.55)';
-    ctx.fillText('16th ACTIF · 2026.08.06–10 · 东莞石排', W / 2, H * 0.90);
   }
 
-  function drawFallbackMascot(ctx, x, y, w, h) {
-    // Simple SVG-style mascot drawn directly on canvas
-    const cx = x + w / 2;
-    // Body (overalls)
-    ctx.fillStyle = '#7FB8E8';
-    roundedRect(ctx, x + w * 0.18, y + h * 0.45, w * 0.64, h * 0.45, 32);
-    ctx.fill();
-    // Face
-    ctx.fillStyle = '#FFD9C2';
-    ctx.beginPath();
-    ctx.arc(cx, y + h * 0.34, w * 0.26, 0, Math.PI * 2);
-    ctx.fill();
-    // Eyes
-    ctx.fillStyle = '#1A1F2E';
-    ctx.beginPath();
-    ctx.arc(cx - w * 0.08, y + h * 0.32, 6, 0, Math.PI * 2);
-    ctx.arc(cx + w * 0.08, y + h * 0.32, 6, 0, Math.PI * 2);
-    ctx.fill();
-    // Smile
-    ctx.strokeStyle = '#1A1F2E';
-    ctx.lineWidth = 4;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.arc(cx, y + h * 0.36, w * 0.08, 0.15 * Math.PI, 0.85 * Math.PI);
-    ctx.stroke();
-    // Cap
-    ctx.fillStyle = '#FF8A4C';
-    ctx.beginPath();
-    ctx.ellipse(cx, y + h * 0.16, w * 0.28, h * 0.10, 0, Math.PI, 0);
-    ctx.fill();
-    ctx.fillRect(cx - w * 0.30, y + h * 0.13, w * 0.60, h * 0.05);
-    // Longan leaf
-    ctx.fillStyle = '#7FB8E8';
-    ctx.beginPath();
-    ctx.ellipse(cx, y + h * 0.06, 10, 5, 0, 0, Math.PI * 2);
-    ctx.fill();
-  }
+  chatForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = chatInput?.value.trim();
+    if (!v || isStreaming) return;
+    chatInput.value = '';
+    streamChat(v);
+  });
+  chatInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatForm.dispatchEvent(new Event('submit', { cancelable: true })); }
+  });
+  chatChips?.querySelectorAll('.chat-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      const q = c.dataset.q;
+      if (q && !isStreaming) streamChat(q);
+    });
+  });
 
-  function roundedRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y,     x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x,     y + h, r);
-    ctx.arcTo(x,     y + h, x,     y,     r);
-    ctx.arcTo(x,     y,     x + w, y,     r);
-    ctx.closePath();
-  }
-
-  /* ---------- 6. Subtle scroll parallax (transform-only, GPU) ---------- */
-  const artImgs = document.querySelectorAll('.scene-art > img');
+  /* ---------- 5. Subtle scroll parallax ---------- */
+  const artImgs = document.querySelectorAll('.scene-img');
   let raf = 0;
   function onScroll() {
     if (raf) return;
@@ -336,7 +247,7 @@
         const r = img.getBoundingClientRect();
         const center = r.top + r.height / 2 - vh / 2;
         const t = Math.max(-1, Math.min(1, center / vh));
-        img.style.transform = `translate3d(0, ${(-t * 12).toFixed(1)}px, 0) scale(1.02)`;
+        img.style.transform = `translate3d(0, ${(-t * 10).toFixed(1)}px, 0) scale(1.02)`;
       });
     });
   }

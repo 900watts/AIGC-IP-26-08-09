@@ -4,294 +4,169 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="theme-color" content="#FFF5E6" />
-  <meta name="description" content="莞仔的漫博一日 — 第十六届中国国际动漫博览会官方吉祥物互动体验" />
-  <meta property="og:title" content="莞仔的漫博一日 · ACTIF 2026" />
-  <meta property="og:description" content="和 莞仔 一起逛漫博。点击、长按、生成你的纪念卡。" />
-  <meta property="og:type" content="website" />
   <title>莞仔的漫博一日 · ACTIF 2026</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Noto+Sans+SC:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
-  />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Noto+Sans+SC:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23FFF5E6'/><path d='M16 32a16 16 0 1 0 32 0 16 16 0 1 0-32 0' fill='%23FF8A4C'/></svg>" />
 </head>
 <body>
 
-  <!-- ============== TOP NAV (floats, asymmetric) ============== -->
-  <header class="topbar" role="banner">
+  <header class="topbar">
     <div class="brand">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M8 12h8M12 8v8"/>
-        </svg>
-      </span>
-      <span class="brand-name">ACTIF&nbsp;·&nbsp;莞仔</span>
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></span>
+      <span class="brand-name">ACTIF · 莞仔</span>
     </div>
-    <div class="counter" aria-live="polite">
-      <span class="counter-num" data-counter>1</span>
-      <span class="counter-sep">/</span>
-      <span class="counter-total">5</span>
+    <div class="counter">
+      <span class="counter-num" data-counter>0</span><span class="counter-sep">/</span><span class="counter-total">5</span>
     </div>
   </header>
 
-  <main id="scroller" class="scroller" role="main">
+  <main id="scroller" class="scroller">
 
-    <!-- ============== HERO ============== -->
-    <section class="hero scene" data-scene="0" aria-label="开场">
+    <section class="hero scene" data-scene="0">
       <div class="hero-frame">
         <p class="hero-eyebrow">第十六届中国国际动漫博览会</p>
         <h1 class="hero-title">
           <span class="hero-title-line">莞仔的</span>
           <span class="hero-title-line hero-title-line--accent">漫博一日</span>
         </h1>
-        <p class="hero-sub">向下滚动 · 一起走完 莞仔 的五站</p>
-        <div class="hero-cta-row">
-          <span class="hero-chip">点击 莞仔</span>
-          <span class="hero-chip hero-chip--alt">长按生成纪念卡</span>
-        </div>
+        <p class="hero-sub">点击 莞仔 听他说话 · 或点右下角跟他聊天</p>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <!-- Decorative orbit lines, no emoji -->
-        <svg viewBox="0 0 320 320" class="hero-orbit">
-          <circle cx="160" cy="160" r="120" fill="none" stroke="#FF8A4C" stroke-width="1" stroke-dasharray="2 6" opacity="0.55"/>
-          <circle cx="160" cy="160" r="80" fill="none" stroke="#7FB8E8" stroke-width="1" stroke-dasharray="2 6" opacity="0.55"/>
-          <circle cx="160" cy="40" r="4" fill="#FF8A4C"/>
-          <circle cx="280" cy="160" r="4" fill="#7FB8E8"/>
-          <circle cx="160" cy="280" r="4" fill="#C9A36A"/>
-        </svg>
-      </div>
-      <div class="scroll-hint" aria-hidden="true">
-        <span class="scroll-hint-text">scroll</span>
-        <span class="scroll-hint-arrow"></span>
-      </div>
+      <div class="scroll-hint"><span class="scroll-hint-text">scroll</span><span class="scroll-hint-arrow"></span></div>
     </section>
 
-    <!-- ============== SCENE TEMPLATE REPEATED 5 TIMES ============== -->
-
-    <!-- SCENE 1 / 清晨·东莞 -->
-    <section class="scene scene--right" data-scene="1" aria-labelledby="t1">
+    <!-- 5 scenes, each shows scene-N.png + mascot button -->
+    <section class="scene scene--right" data-scene="1">
       <div class="scene-art">
-        <img src="assets/scene-1.png" alt="莞仔在东莞石排的清晨小山坡上, 向远方挥手" loading="lazy" />
-        <button class="mascot" data-mascot data-pose-target="wave" aria-label="点击 莞仔 听 TA 说话">
-          <span class="mascot-ring" aria-hidden="true"></span>
-          <span class="mascot-pulse" aria-hidden="true"></span>
-          <svg viewBox="0 0 64 64" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="32" cy="26" r="12" fill="#FFD9C2" stroke="#1A1F2E"/>
-            <path d="M16 56c0-9 7-15 16-15s16 6 16 15" fill="#7FB8E8" stroke="#1A1F2E"/>
-            <path d="M22 18c2-4 6-6 10-6s8 2 10 6" stroke="#FF8A4C" stroke-width="6"/>
-            <circle cx="28" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <circle cx="36" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <path d="M29 33c1.5 1.5 4.5 1.5 6 0" stroke="#1A1F2E"/>
-          </svg>
+        <img class="scene-img" src="assets/scene-1.png" alt="莞仔在东莞清晨" loading="lazy" />
+        <button class="mascot" data-mascot aria-label="点击 莞仔 听 TA 说话">
+          <img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img />
         </button>
-        <div class="bubble" data-bubble data-bubble-for="1" role="status" aria-live="polite">
-          <span class="bubble-text">清晨好, 东莞今天也发光</span>
-        </div>
+        <div class="bubble" data-bubble><span class="bubble-text">清晨好, 东莞今天也发光</span></div>
       </div>
       <div class="scene-text">
         <p class="scene-eyebrow">第一站</p>
-        <h2 class="scene-title" id="t1">清晨 · 东莞</h2>
+        <h2 class="scene-title">清晨 · 东莞</h2>
         <p class="scene-body">太阳刚爬上石排的山坡, 莞仔 已经在门口等你了。</p>
-        <ul class="scene-tags">
-          <li>#东莞</li><li>#清晨</li><li>#开场</li>
-        </ul>
+        <ul class="scene-tags"><li>#东莞</li><li>#清晨</li><li>#开场</li></ul>
       </div>
     </section>
 
-    <!-- SCENE 2 / 展馆入口 -->
-    <section class="scene scene--left" data-scene="2" aria-labelledby="t2">
+    <section class="scene scene--left" data-scene="2">
       <div class="scene-text">
         <p class="scene-eyebrow">第二站</p>
-        <h2 class="scene-title" id="t2">展馆入口</h2>
+        <h2 class="scene-title">展馆入口</h2>
         <p class="scene-body">拱门挂满了彩旗, 莞仔 在灯光下向你招手。</p>
-        <ul class="scene-tags">
-          <li>#入场</li><li>#欢迎</li><li>#拱门</li>
-        </ul>
+        <ul class="scene-tags"><li>#入场</li><li>#欢迎</li><li>#拱门</li></ul>
       </div>
       <div class="scene-art">
-        <img src="assets/scene-2.png" alt="莞仔 在 ACTIF 展馆入口, 双手挥手" loading="lazy" />
-        <button class="mascot" data-mascot data-pose-target="wave" aria-label="点击 莞仔 听 TA 说话">
-          <span class="mascot-ring" aria-hidden="true"></span>
-          <span class="mascot-pulse" aria-hidden="true"></span>
-          <svg viewBox="0 0 64 64" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="32" cy="26" r="12" fill="#FFD9C2" stroke="#1A1F2E"/>
-            <path d="M16 56c0-9 7-15 16-15s16 6 16 15" fill="#7FB8E8" stroke="#1A1F2E"/>
-            <path d="M22 18c2-4 6-6 10-6s8 2 10 6" stroke="#FF8A4C" stroke-width="6"/>
-            <circle cx="28" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <circle cx="36" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <path d="M29 33c1.5 1.5 4.5 1.5 6 0" stroke="#1A1F2E"/>
-          </svg>
-        </button>
-        <div class="bubble" data-bubble data-bubble-for="2" role="status" aria-live="polite">
-          <span class="bubble-text">欢迎来到 ACTIF 的门口</span>
-        </div>
+        <img class="scene-img" src="assets/scene-2.png" alt="莞仔 在展馆入口" loading="lazy" />
+        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img /></button>
+        <div class="bubble" data-bubble><span class="bubble-text">欢迎来到 ACTIF 的门口</span></div>
       </div>
     </section>
 
-    <!-- SCENE 3 / 潮玩馆 -->
-    <section class="scene scene--right" data-scene="3" aria-labelledby="t3">
+    <section class="scene scene--right" data-scene="3">
       <div class="scene-art">
-        <img src="assets/scene-3.png" alt="莞仔 在潮玩馆里指向一颗巨大的盲盒" loading="lazy" />
-        <button class="mascot" data-mascot data-pose-target="wave" aria-label="点击 莞仔 听 TA 说话">
-          <span class="mascot-ring" aria-hidden="true"></span>
-          <span class="mascot-pulse" aria-hidden="true"></span>
-          <svg viewBox="0 0 64 64" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="32" cy="26" r="12" fill="#FFD9C2" stroke="#1A1F2E"/>
-            <path d="M16 56c0-9 7-15 16-15s16 6 16 15" fill="#7FB8E8" stroke="#1A1F2E"/>
-            <path d="M22 18c2-4 6-6 10-6s8 2 10 6" stroke="#FF8A4C" stroke-width="6"/>
-            <circle cx="28" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <circle cx="36" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <path d="M29 33c1.5 1.5 4.5 1.5 6 0" stroke="#1A1F2E"/>
-          </svg>
-        </button>
-        <div class="bubble" data-bubble data-bubble-for="3" role="status" aria-live="polite">
-          <span class="bubble-text">潮玩馆里, 每一格都是惊喜</span>
-        </div>
+        <img class="scene-img" src="assets/scene-3.png" alt="莞仔 在潮玩馆" loading="lazy" />
+        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img /></button>
+        <div class="bubble" data-bubble><span class="bubble-text">潮玩馆里, 每一格都是惊喜</span></div>
       </div>
       <div class="scene-text">
         <p class="scene-eyebrow">第三站</p>
-        <h2 class="scene-title" id="t3">潮玩馆</h2>
+        <h2 class="scene-title">潮玩馆</h2>
         <p class="scene-body">三千平米货架, 三千种心跳。莞仔 看中了那颗最大的盲盒。</p>
-        <ul class="scene-tags">
-          <li>#潮玩</li><li>#盲盒</li><li>#打卡</li>
-        </ul>
+        <ul class="scene-tags"><li>#潮玩</li><li>#盲盒</li><li>#打卡</li></ul>
       </div>
     </section>
 
-    <!-- SCENE 4 / 签售舞台 -->
-    <section class="scene scene--left" data-scene="4" aria-labelledby="t4">
+    <section class="scene scene--left" data-scene="4">
       <div class="scene-text">
         <p class="scene-eyebrow">第四站</p>
-        <h2 class="scene-title" id="t4">签售舞台</h2>
+        <h2 class="scene-title">签售舞台</h2>
         <p class="scene-body">台上十分钟, 台下一整天。莞仔 握紧了那支橙色马克笔。</p>
-        <ul class="scene-tags">
-          <li>#签售</li><li>#舞台</li><li>#见面</li>
-        </ul>
+        <ul class="scene-tags"><li>#签售</li><li>#舞台</li><li>#见面</li></ul>
       </div>
       <div class="scene-art">
-        <img src="assets/scene-4.png" alt="莞仔 在签售舞台上为粉丝签名" loading="lazy" />
-        <button class="mascot" data-mascot data-pose-target="wave" aria-label="点击 莞仔 听 TA 说话">
-          <span class="mascot-ring" aria-hidden="true"></span>
-          <span class="mascot-pulse" aria-hidden="true"></span>
-          <svg viewBox="0 0 64 64" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="32" cy="26" r="12" fill="#FFD9C2" stroke="#1A1F2E"/>
-            <path d="M16 56c0-9 7-15 16-15s16 6 16 15" fill="#7FB8E8" stroke="#1A1F2E"/>
-            <path d="M22 18c2-4 6-6 10-6s8 2 10 6" stroke="#FF8A4C" stroke-width="6"/>
-            <circle cx="28" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <circle cx="36" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <path d="M29 33c1.5 1.5 4.5 1.5 6 0" stroke="#1A1F2E"/>
-          </svg>
-        </button>
-        <div class="bubble" data-bubble data-bubble-for="4" role="status" aria-live="polite">
-          <span class="bubble-text">签售这一刻, 想签给所有人</span>
-        </div>
+        <img class="scene-img" src="assets/scene-4.png" alt="莞仔 在签售舞台" loading="lazy" />
+        <button class="mascot" data-mascot><img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img /></button>
+        <div class="bubble" data-bubble><span class="bubble-text">签售这一刻, 想签给所有人</span></div>
       </div>
     </section>
 
-    <!-- SCENE 5 / 夜幕·灯笼 -->
-    <section class="scene scene--right" data-scene="5" aria-labelledby="t5">
+    <section class="scene scene--right" data-scene="5">
       <div class="scene-art">
-        <img src="assets/scene-5.png" alt="夜晚, 莞仔 在屋顶放飞带着版权印章的纸灯笼" loading="lazy" />
-        <button class="mascot" data-mascot data-pose-target="wave" aria-label="长按 莞仔 生成纪念卡">
-          <span class="mascot-ring" aria-hidden="true"></span>
-          <span class="mascot-pulse" aria-hidden="true"></span>
-          <svg viewBox="0 0 64 64" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="32" cy="26" r="12" fill="#FFD9C2" stroke="#1A1F2E"/>
-            <path d="M16 56c0-9 7-15 16-15s16 6 16 15" fill="#7FB8E8" stroke="#1A1F2E"/>
-            <path d="M22 18c2-4 6-6 10-6s8 2 10 6" stroke="#FF8A4C" stroke-width="6"/>
-            <circle cx="28" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <circle cx="36" cy="28" r="1.5" fill="#1A1F2E" stroke="none"/>
-            <path d="M29 33c1.5 1.5 4.5 1.5 6 0" stroke="#1A1F2E"/>
-          </svg>
-        </button>
-        <div class="bubble" data-bubble data-bubble-for="5" role="status" aria-live="polite">
-          <span class="bubble-text">闭幕后, 让一盏灯替你记住今天</span>
-        </div>
+        <img class="scene-img" src="assets/scene-5.png" alt="莞仔 在夜幕放飞灯笼" loading="lazy" />
+        <button class="mascot mascot--hero" data-mascot><img class="mascot-img" src="assets/mascot-wave.png" alt="" data-mascot-img /></button>
+        <div class="bubble" data-bubble><span class="bubble-text">闭幕后, 让一盏灯替你记住今天</span></div>
       </div>
       <div class="scene-text">
         <p class="scene-eyebrow">第五站 · 终</p>
-        <h2 class="scene-title" id="t5">夜幕 · 灯笼</h2>
+        <h2 class="scene-title">夜幕 · 灯笼</h2>
         <p class="scene-body">每个灯笼都盖一枚版权印章, 把这一天放飞给明年的自己。</p>
-        <ul class="scene-tags">
-          <li>#夜场</li><li>#灯笼</li><li>#版权</li>
-        </ul>
-        <p class="scene-hint">长按 莞仔 · 生成你的纪念卡</p>
+        <ul class="scene-tags"><li>#夜场</li><li>#灯笼</li><li>#版权</li></ul>
       </div>
     </section>
 
-    <!-- ============== FOOTER ============== -->
     <footer class="foot">
       <p class="foot-title">第十六届中国国际动漫博览会</p>
       <p class="foot-meta">2026.08.06 — 08.10 · 东莞石排 · 漫博中心</p>
       <p class="foot-meta foot-meta--dim">AIGC 黑客松 · Group A7 · 莞仔的漫博一日</p>
     </footer>
-
   </main>
 
-  <!-- ============== FLOATING CTA ============== -->
-  <button class="cta" id="openCard" type="button" aria-haspopup="dialog">
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <rect x="3" y="6" width="18" height="13" rx="3"/>
-      <path d="M3 10h18"/>
-      <path d="M8 15h3"/>
-    </svg>
-    <span>生成我的 ACTIF 纪念卡</span>
+  <!-- ============================================
+       FLOATING CHAT BUTTON — opens the chat drawer
+       ============================================ -->
+  <button class="chat-fab" id="chatFab" type="button" aria-label="和 莞仔 聊天">
+    <img src="assets/mascot-wave.png" alt="" class="chat-fab-img" />
+    <span class="chat-fab-dot" aria-hidden="true"></span>
   </button>
 
-  <!-- ============== SHARE CARD MODAL ============== -->
-  <div class="modal" id="cardModal" role="dialog" aria-modal="true" aria-labelledby="cardTitle" hidden>
-    <div class="modal-card">
-      <header class="modal-head">
-        <h3 class="modal-title" id="cardTitle">你的 ACTIF 纪念卡</h3>
-        <button class="modal-close" id="closeCard" type="button" aria-label="关闭">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 6l12 12M18 6L6 18"/>
-          </svg>
-        </button>
-      </header>
+  <div class="cta">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><path d="M8 15h3"/></svg>
+    <span>长按图片保存纪念卡</span>
+  </div>
 
-      <label class="field">
-        <span class="field-label">输入你的名字或昵称</span>
-        <input id="nameInput" type="text" maxlength="12" placeholder="比如: 小明" autocomplete="off" />
-      </label>
-
-      <fieldset class="scene-picker">
-        <legend class="field-label">选择一站</legend>
-        <div class="scene-picker-row">
-          <label><input type="radio" name="sceneIdx" value="1" checked /><span>清晨·东莞</span></label>
-          <label><input type="radio" name="sceneIdx" value="2" /><span>展馆入口</span></label>
-          <label><input type="radio" name="sceneIdx" value="3" /><span>潮玩馆</span></label>
-          <label><input type="radio" name="sceneIdx" value="4" /><span>签售舞台</span></label>
-          <label><input type="radio" name="sceneIdx" value="5" /><span>夜幕·灯笼</span></label>
+  <!-- ============================================
+       CHAT DRAWER
+       ============================================ -->
+  <div class="chat-drawer" id="chatDrawer" role="dialog" aria-modal="true" aria-labelledby="chatTitle" hidden>
+    <header class="chat-head">
+      <div class="chat-head-info">
+        <div class="chat-head-avatar">
+          <img src="assets/mascot-wave.png" alt="" id="chatAvatar" />
         </div>
-      </fieldset>
-
-      <button class="reroll" id="rerollBtn" type="button">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/>
-          <path d="M21 3v5h-5"/>
-          <path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/>
-          <path d="M3 21v-5h5"/>
-        </svg>
-        <span>换一句 AI 寄语</span>
-      </button>
-
-      <div class="card-stage">
-        <canvas id="cardCanvas" width="720" height="960" aria-label="纪念卡预览"></canvas>
+        <div class="chat-head-meta">
+          <h3 class="chat-head-title" id="chatTitle">莞仔</h3>
+          <p class="chat-head-sub" id="chatStatus">在线 · 漫博中心门口</p>
+        </div>
       </div>
+      <button class="chat-close" id="chatClose" type="button" aria-label="关闭">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
 
-      <p class="save-hint">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 5v14M5 12l7 7 7-7"/>
-        </svg>
-        长按图片保存到相册 · 或截图分享到朋友圈
-      </p>
+    <div class="chat-log" id="chatLog" aria-live="polite">
+      <div class="chat-msg chat-msg--bot">
+        <div class="chat-bubble chat-bubble--bot">你好呀! 我是 莞仔, ACTIF 漫博会的吉祥物 🎪<br>问我关于漫博的事, 或者让我给你写朋友圈文案吧~</div>
+      </div>
     </div>
+
+    <div class="chat-chips" id="chatChips">
+      <button class="chat-chip" data-q="漫博会有什么好玩的?">漫博有什么好玩的</button>
+      <button class="chat-chip" data-q="给我写一条朋友圈文案">写朋友圈文案</button>
+      <button class="chat-chip" data-q="讲一个东莞或漫博的冷知识">讲个冷知识</button>
+      <button class="chat-chip" data-q="漫博会几点开门?">漫博会时间</button>
+    </div>
+
+    <form class="chat-input" id="chatForm">
+      <input id="chatInput" type="text" placeholder="跟 莞仔 说点什么..." maxlength="80" autocomplete="off" />
+      <button type="submit" class="chat-send" aria-label="发送">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14-7-4 14-3-6-7-1z"/></svg>
+      </button>
+    </form>
   </div>
 
   <script src="app.js" defer></script>
