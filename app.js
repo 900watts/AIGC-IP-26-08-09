@@ -39,34 +39,23 @@
     scenes.forEach(s => s.classList.add('is-visible'));
   }
 
-  /* ---------- 3. Tap-to-react mascot (scene bubbles) ---------- */
-  const POSE = {
-    IDLE: 'assets/mascot-idle-circle.png',
-    WAVE: 'assets/mascot-wave-circle.png',
-    BLINK: 'assets/mascot-blink-circle.png'
-  };
-  document.querySelectorAll('[data-mascot]').forEach(btn => {
-    const scene = btn.closest('.scene');
-    const sceneIdx = Number(scene?.dataset.scene ?? 1);
-    const bubble = scene?.querySelector('[data-bubble]');
+  /* ---------- 3. Auto-show scene bubble on first reveal ---------- */
+  // (Mascot tap button removed per user request — single mascot entry = chat FAB)
+  document.querySelectorAll('.scene').forEach(scene => {
+    const sceneIdx = Number(scene.dataset.scene ?? 1);
+    const bubble = scene.querySelector('[data-bubble]');
     const bubbleText = bubble?.querySelector('.bubble-text');
-    const img = btn.querySelector('[data-mascot-img]');
-    let hideTimer = 0, isReacting = false;
     if (bubbleText) bubbleText.textContent = CaptionEngine.make({ idx: sceneIdx });
-    btn.addEventListener('click', () => {
-      if (isReacting || !img) return;
-      isReacting = true;
-      img.src = POSE.BLINK;
-      btn.classList.add('is-blinking');
-      setTimeout(() => { if (img) img.src = POSE.WAVE; btn.classList.remove('is-blinking'); }, 220);
-      if (bubble && bubbleText) {
-        bubbleText.textContent = CaptionEngine.make({ idx: sceneIdx });
+    // Reveal bubble when scene becomes visible
+    const mo = new MutationObserver(() => {
+      if (scene.classList.contains('is-visible') && bubble) {
         bubble.classList.add('is-shown');
-        clearTimeout(hideTimer);
-        hideTimer = setTimeout(() => bubble.classList.remove('is-shown'), 3200);
+        // Hide after a few seconds so it doesn't block the image forever
+        setTimeout(() => bubble.classList.remove('is-shown'), 4200);
+        mo.disconnect();
       }
-      setTimeout(() => { isReacting = false; }, 460);
     });
+    mo.observe(scene, { attributes: true, attributeFilter: ['class'] });
   });
 
   /* ---------- 4. CHAT — Ollama streaming via local proxy (avoids CORS) ---------- */
