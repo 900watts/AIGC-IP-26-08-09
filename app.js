@@ -109,7 +109,15 @@
   function openChat() {
     if (!chatDrawer) return;
     chatDrawer.hidden = false;
-    setTimeout(() => chatInput?.focus({ preventScroll: true }), 280);
+    // Auto-scroll input into view on smaller viewports
+    requestAnimationFrame(() => {
+      chatDrawer.scrollTop = chatDrawer.scrollHeight;
+      if (chatInput) {
+        chatInput.removeAttribute('readonly');
+        chatInput.disabled = false;
+        chatInput.focus({ preventScroll: true });
+      }
+    });
   }
   function closeChat() {
     if (!chatDrawer) return;

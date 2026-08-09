@@ -339,8 +339,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 .chat-close:hover { background: rgba(26, 31, 46, 0.12); }
 
 .chat-log {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 18px 16px 8px;
   display: flex; flex-direction: column; gap: 12px;
   scroll-behavior: smooth;
@@ -416,15 +418,22 @@ ul { margin: 0; padding: 0; list-style: none; }
   background: var(--cream);
   border-top: 1px solid rgba(26, 31, 46, 0.08);
   flex-shrink: 0;
+  position: relative;
+  z-index: 5;
 }
 #chatInput {
-  flex: 1; height: 44px;
-  padding: 0 16px;
-  border-radius: 22px;
-  border: 1.5px solid rgba(26, 31, 46, 0.1);
+  flex: 1; height: 52px;
+  padding: 0 18px;
+  border-radius: 26px;
+  border: 2px solid rgba(26, 31, 46, 0.15);
   background: var(--cream-2);
   font-family: var(--font-cn);
-  font-size: 15px;
+  font-size: 16px;
+  color: var(--ink);
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto !important;
+  z-index: 6;
   transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out);
 }
 #chatInput:focus { outline: none; border-color: var(--apricot); background: var(--cream); }
